@@ -19,7 +19,7 @@ def convert(f):
     cmd_line += " -filter:v \"setpts=0.1*PTS\""
     cmd_line += " " + str(PATH / D1 / f.name)
 
-    logging.info("New convert: %s", cmd_line)
+    logging.info("New convert: %s" % cmd_line)
     Popen(cmd_line, shell=True).wait()
 
 

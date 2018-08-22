@@ -6,7 +6,9 @@ import pathlib
 from subprocess import Popen
 from datetime import datetime
 
-PATH = pathlib.Path("/media/freebox/webcam")
+PATH_RAW = pathlib.Path("/media/freebox/webcam")
+PATH_120 = pathlib.Path("/home/francois/webcam/120fps")
+PATH_REGROUP = pathlib.Path("/media/freebox/webcam/regroup")
 EXT = "mkv"
 
 def compute_name_from_now():

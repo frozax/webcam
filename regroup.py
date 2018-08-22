@@ -5,8 +5,7 @@ import time
 from subprocess import Popen
 from datetime import datetime
 
-from webcam import PATH, EXT
-from convert import D1
+from webcam import PATH_REGROUP, PATH_120, EXT
 
 
 D2 = "regroup"
@@ -27,13 +26,17 @@ def regroup(fs):
     for i, f in enumerate(fs):
         x = (i % 3) * 320
         y = (i // 3) * 240
-        cmd_line += " [base%d][v%d] overlay=shortest=1:x=%d:y=%d" % (i, i, x, y)
-        if i != len(fs) - 1:
-            # prepare next filter
-            cmd_line += " [base%d];" % (i + 1)
+        cmd_line += " [base%d][v%d] overlay=x=%d:y=%d" % (i, i, x, y)
+        #if i != len(fs) - 1:
+        # prepare next filter
+        cmd_line += " [base%d];" % (i + 1)
+    # speed up x8
+    cmd_line += " [base%d] setpts=0.125*PTS" % (i+1)
+
     cmd_line += "\""
 
-    cmd_line += " " + str(PATH / D2 / fs[0].name)
+
+    cmd_line += " " + str(PATH_REGROUP / fs[0].name)
     print(cmd_line)
     logging.info("New regroup: %s" % cmd_line)
     Popen(cmd_line, shell=True).wait()
@@ -42,9 +45,9 @@ def regroup(fs):
 def loop():
     while True:
         # get all files except last one
-        regrouped_files = sorted(list((PATH / D2).glob("*." + EXT)))
+        regrouped_files = sorted(list((PATH_REGROUP).glob("*." + EXT)))
         regrouped_files = [f.name for f in regrouped_files]
-        regroup_files = sorted(list((PATH / D1).glob("*." + EXT)))[:-1]
+        regroup_files = sorted(list((PATH_120).glob("*." + EXT)))[:-1]
         # don't go to the end, because we need to have enough input
         for i, f in enumerate(regroup_files[:-VID_PER_GROUP]):
             ext_len = len("." + EXT)

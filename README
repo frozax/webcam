@@ -1,3 +1,7 @@
+Doc:
+ - capture: run motion in the current directory. will capture jpegs
+ - once the day is completed, create a FAST 120fps mpg
+
 Current Hour: 100% quality (RAW)
 Converted to 120 fps (*10) (FAST)
 
